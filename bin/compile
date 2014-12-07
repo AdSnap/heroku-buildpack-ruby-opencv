@@ -9,6 +9,10 @@ if system "#{open_cv_command} #{ARGV[0]} #{ARGV[1]}"
   require "language_pack"
   require "language_pack/shell_helpers"
 
+<<<<<<< HEAD
+=======
+begin
+>>>>>>> 33f2e18f188641a3c80606ac85b557af0774df38
   LanguagePack::Instrument.trace 'compile', 'app.compile' do
     if pack = LanguagePack.detect(ARGV[0], ARGV[1])
       LanguagePack::ShellHelpers.initialize_env(ARGV[2])
@@ -17,5 +21,16 @@ if system "#{open_cv_command} #{ARGV[0]} #{ARGV[1]}"
         pack.compile
       end
     end
+  end
+rescue Exception => e
+  Kernel.puts " !"
+  e.message.split("\n").each do |line|
+    Kernel.puts " !     #{line.strip}"
+  end
+  Kernel.puts " !"
+  if e.is_a?(BuildpackError)
+    exit 1
+  else
+    raise e
   end
 end
